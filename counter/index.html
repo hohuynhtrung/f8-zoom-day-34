@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Counter App</title>
+  </head>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #eef2f3;
+    }
+
+    .page-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 50px;
+    }
+
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 4rem;
+      margin: 10px 0;
+      color: #333;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background: #007bff;
+      color: white;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .back {
+      display: block;
+      margin-top: 20px;
+      color: #666;
+      text-decoration: none;
+    }
+  </style>
+  <body>
+    <div id="root"></div>
+
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone@7.21.4/babel.min.js"></script>
+    <script type="text/babel">
+      function Counter() {
+        const [count, setCount] = React.useState(0);
+        let countColor = "#333";
+        if (count > 0) {
+          countColor = "#28a745";
+        } else if (count < 0) {
+          countColor = "#dc3545";
+        }
+        return (
+          <div className="page-container">
+            <a href="../index.html" className="back">
+              ← Back to Menu
+            </a>
+            <div className="box">
+              <h2>Counter App</h2>
+              <h1 style={{ color: countColor }}>{count}</h1>
+              <button onClick={() => setCount(count - 1)}>-</button>
+              <button onClick={() => setCount(0)}>Reset</button>
+              <button onClick={() => setCount(count + 1)}>+</button>
+            </div>
+          </div>
+        );
+      }
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<Counter />);
+    </script>
+  </body>
+</html>

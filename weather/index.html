@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <style>
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          Oxygen,
+          Ubuntu,
+          Cantarell,
+          "Open Sans",
+          "Helvetica Neue",
+          sans-serif;
+        background: linear-gradient(135deg, #74b9ff, #a29bfe);
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+      }
+      .page-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 20px;
+      }
+      .weather-box {
+        background: rgba(255, 255, 255, 0.9);
+        width: 100%;
+        max-width: 400px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin-top: 30px;
+        text-align: center;
+        backdrop-filter: blur(5px);
+      }
+      h2 {
+        margin-top: 0;
+        color: #2d3436;
+      }
+      select {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        border: 2px solid #74b9ff;
+        border-radius: 8px;
+        background: white;
+        color: #2d3436;
+        outline: none;
+        cursor: pointer;
+        font-weight: 500;
+        margin-bottom: 25px;
+      }
+      .weather-card {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      .weather-icon {
+        font-size: 4.5rem;
+        margin: 15px 0;
+        display: block;
+      }
+      .temp {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #2d3436;
+        margin: 5px 0;
+      }
+      .city-name {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #0984e3;
+        margin: 0;
+      }
+      .status {
+        font-size: 1.1rem;
+        color: #636e72;
+        margin: 5px 0 20px 0;
+      }
+      .details {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        background: #f1f2f6;
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        font-size: 0.95rem;
+        color: #2d3436;
+      }
+      .refresh-btn {
+        background: #0984e3;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+        width: 100%;
+      }
+      .refresh-btn:hover {
+        background: #0284c7;
+      }
+      .back {
+        display: block;
+        margin-top: 30px;
+        text-align: center;
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .back:hover {
+        text-decoration: underline;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone@7.21.4/babel.min.js"></script>
+    <script type="text/babel">
+      function Weather() {
+        const [weatherData, setWeatherData] = React.useState({
+          hanoi: { city: "Ha Noi", temp: 28, weather: "Sunny", humidity: 65 },
+          hcm: {
+            city: "Ho Chi Minh",
+            temp: 32,
+            weather: "Cloudy",
+            humidity: 78,
+          },
+          danang: {
+            city: "Da Nang",
+            temp: 30,
+            weather: "Light Rain",
+            humidity: 82,
+          },
+        });
+        const [selectCity, setSelectCity] = React.useState("Ha Noi");
+        const getWeatherIcon = (status) => {
+          switch (status) {
+            case "Sunny":
+              return "☀";
+            case "Cloudy":
+              return "🌥";
+            case "Light Rain":
+              return "🌧";
+            default:
+              return "⭐";
+          }
+        };
+
+        const handleCityChange = (e) => {
+          setSelectCity(e.target.value);
+        };
+
+        const handleRefresh = () => {
+          const getRandomOffset = () => Math.floor(Math.random() * 11) - 5;
+          setWeatherData((prevData) => {
+            const updateData = { ...prevData };
+
+            Object.keys(updateData).forEach((key) => {
+              updateData[key] = {
+                ...updateData[key],
+                temp: Math.max(0, updateData[key].temp + getRandomOffset()),
+                humidity: Math.min(
+                  100,
+                  Math.max(0, updateData[key].humidity + getRandomOffset()),
+                ),
+              };
+            });
+            return updateData;
+          });
+        };
+
+        const currentWeather = weatherData[selectCity];
+        return (
+          <div className="page-container">
+            <a href="../index.html" className="back">
+              ← Back to Menu
+            </a>
+            <div className="weather-box">
+              <h2>Weather App</h2>
+              <select value={selectCity} onChange={handleCityChange}>
+                <option value="hanoi">Ha Noi</option>
+                <option value="hcm">Ho Chi Minh</option>
+                <option value="danang">Da Nang</option>
+              </select>
+
+              {currentWeather && (
+                <div className="weather-card">
+                  <p className="city-name">{currentWeather.city}</p>
+                  <span className="weather-icon">
+                    {getWeatherIcon(currentWeather.weather)}
+                  </span>
+                  <p className="temp">{currentWeather.temp}°C</p>
+                  <p className="status">Condition: {currentWeather.weather}</p>
+
+                  <div className="details">
+                    <span>
+                      <strong>Humidity:</strong> {currentWeather.humidity}%
+                    </span>
+                  </div>
+                </div>
+              )}
+              <button className="refresh-btn" onClick={handleRefresh}>
+                Refresh Data
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<Weather />);
+    </script>
+  </body>
+</html>

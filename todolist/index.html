@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List App</title>
+    <style>
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          Oxygen,
+          Ubuntu,
+          Cantarell,
+          "Open Sans",
+          "Helvetica Neue",
+          sans-serif;
+        background: #f7f9fa;
+        padding: 50px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .page-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 50px;
+      }
+
+      .todo-card {
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        width: 350px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .input-group {
+        display: flex;
+        margin-bottom: 20px;
+      }
+
+      input {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px 0 0 4px;
+      }
+
+      button {
+        padding: 8px 15px;
+        border: none;
+        background: #007bff;
+        color: white;
+        cursor: pointer;
+        border-radius: 0 4px 4px 0;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      li {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        align-items: center;
+      }
+
+      .completed {
+        text-decoration: line-through;
+        color: #aaa;
+      }
+
+      .delete-btn {
+        background: #dc3545;
+        border-radius: 4px;
+        padding: 4px 8px;
+        cursor: pointer;
+      }
+
+      .back {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+        color: #666;
+        text-decoration: none;
+      }
+
+      .back:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone@7.21.4/babel.min.js"></script>
+
+    <script type="text/babel">
+      function Todolist() {
+        let uniqId = 0;
+
+        const [input, setInput] = React.useState("");
+        const [todos, setTodos] = React.useState([]);
+
+        const addTodo = () => {
+          if (!input.trim()) return;
+          setTodos([
+            ...todos,
+            { id: Date.now(), text: input, completed: false },
+          ]);
+          setInput("");
+        };
+
+        const toggleTodo = (id) => {
+          setTodos(
+            todos.map((todo) =>
+              todo.id === id ? { ...todo, completed: !todo.completed } : todo,
+            ),
+          );
+        };
+
+        const deleteTodo = (id, e) => {
+          e.stopPropagation();
+          setTodos(todos.filter((todo) => todo.id !== id));
+        };
+        return (
+          <div className="page-container">
+            <a href="../index.html" className="back">
+              ← Back to Menu
+            </a>
+            <div className="todo-card">
+              <h3>Todo List App</h3>
+              <div className="input-group">
+                <input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  type="text"
+                  placeholder="Create jobs..."
+                ></input>
+                <button onClick={addTodo}>Add</button>
+              </div>
+              <ul>
+                {todos.map((todo) => (
+                  <li key={todo.id} onClick={() => toggleTodo(todo.id)}>
+                    <span className={todo.completed ? "completed" : ""}>
+                      {todo.text}
+                    </span>
+                    <span
+                      className="delete-btn"
+                      onClick={(e) => deleteTodo(todo.id, e)}
+                    >
+                      Delete
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        );
+      }
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<Todolist />);
+    </script>
+  </body>
+</html>

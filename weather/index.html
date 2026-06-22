@@ -164,11 +164,11 @@
         const getWeatherIcon = (status) => {
           switch (status) {
             case "Sunny":
-              return "☀";
+              return "☀️";
             case "Cloudy":
-              return "🌥";
+              return "⛅";
             case "Light Rain":
-              return "🌧";
+              return "🌦️";
             default:
               return "⭐";
           }
@@ -184,13 +184,11 @@
             const updateData = { ...prevData };
 
             Object.keys(updateData).forEach((key) => {
+              const nextHumidity = updateData[key].humidity + getRandomOffset();
               updateData[key] = {
                 ...updateData[key],
                 temp: Math.max(0, updateData[key].temp + getRandomOffset()),
-                humidity: Math.min(
-                  100,
-                  Math.max(0, updateData[key].humidity + getRandomOffset()),
-                ),
+                humidity: Math.min(100, Math.max(0, nextHumidity)),
               };
             });
             return updateData;

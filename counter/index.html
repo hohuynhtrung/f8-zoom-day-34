@@ -37,6 +37,10 @@
       color: #333;
     }
 
+    .box p {
+      display: flex;
+    }
+
     button {
       padding: 10px 20px;
       margin: 5px;
@@ -88,6 +92,14 @@
             <div className="box">
               <h2>Counter App</h2>
               <h1 style={{ color: countColor }}>{count}</h1>
+              <p>
+                Status:{" "}
+                {count > 0
+                  ? "Positive number"
+                  : count < 0
+                    ? "Negative number"
+                    : "0"}
+              </p>
               <button onClick={() => setCount(count - 1)}>-</button>
               <button onClick={() => setCount(0)}>Reset</button>
               <button onClick={() => setCount(count + 1)}>+</button>

@@ -258,6 +258,7 @@
                 {products.map((product) => (
                   <div className="product-card" key={product.id}>
                     <div>
+                      <span className="product-id">ID: {product.id}</span>
                       <h3>{capitalizeFirstLetter(product.title)}</h3>
                       <p>{truncateBody(product.body)}</p>
                     </div>

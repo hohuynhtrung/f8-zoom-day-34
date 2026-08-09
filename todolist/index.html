@@ -51,6 +51,11 @@
         border-radius: 4px 0 0 4px;
       }
 
+      .todo-card p {
+        font-size: 14px;
+        color: #666;
+      }
+
       button {
         padding: 8px 15px;
         border: none;
@@ -139,6 +144,10 @@
           e.stopPropagation();
           setTodos(todos.filter((todo) => todo.id !== id));
         };
+
+        const total = todos.length;
+        const completed = todos.filter((t) => t.completed).length;
+        const remaining = total - completed;
         return (
           <div className="page-container">
             <a href="../index.html" className="back">
@@ -155,21 +164,34 @@
                 ></input>
                 <button onClick={addTodo}>Add</button>
               </div>
-              <ul>
-                {todos.map((todo) => (
-                  <li key={todo.id} onClick={() => toggleTodo(todo.id)}>
-                    <span className={todo.completed ? "completed" : ""}>
-                      {todo.text}
-                    </span>
-                    <span
-                      className="delete-btn"
-                      onClick={(e) => deleteTodo(todo.id, e)}
-                    >
-                      Delete
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              <p>
+                Total: {total} task{total > 1 ? "s" : ""}
+              </p>
+              <p>
+                Complete: {completed} task{completed > 1 ? "s" : ""}
+              </p>
+              <p>
+                Remaining: {remaining} task{remaining > 1 ? "s" : ""}
+              </p>
+              {todos.length === 0 ? (
+                <div>No tasks. Add your first task.</div>
+              ) : (
+                <ul>
+                  {todos.map((todo) => (
+                    <li key={todo.id} onClick={() => toggleTodo(todo.id)}>
+                      <span className={todo.completed ? "completed" : ""}>
+                        {todo.text}
+                      </span>
+                      <span
+                        className="delete-btn"
+                        onClick={(e) => deleteTodo(todo.id, e)}
+                      >
+                        Delete
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         );
